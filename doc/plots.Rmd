@@ -1,0 +1,63 @@
+---
+title: "Untitled Draft"
+author: "Report Author"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+## target knits Rmds in their own session, so load libraries here.
+source("../packages.R")
+```
+
+```{r load-targets}
+tar_load(model_draws)
+tar_load(m)
+```
+
+
+## Analysis
+
+```{r}
+
+petal_length_plot <- seq(min(iris$Petal.Length),
+                         max(iris$Petal.Length),
+                         length.out = 100)
+
+mu_plot <- alpha + petal_length_plot * beta
+
+mu_plot_draws <- calculate(mu_plot, values = draws)
+mu_est <- colMeans(mu_plot_draws[[1]])
+plot(mu_est ~ petal_length_plot, type = "n",
+     ylim = range(mu_plot_draws[[1]]))
+apply(mu_plot_draws[[1]], 1, lines,
+      x = petal_length_plot, col = grey(0.8))
+lines(mu_est ~ petal_length_plot, lwd = 2)
+
+```
+
+
+## Reproducibility
+
+<details><summary>Reproducibility receipt</summary>
+
+```{r}
+## datetime
+Sys.time()
+
+## repository
+if(requireNamespace('git2r', quietly = TRUE)) {
+  git2r::repository()
+} else {
+  c(
+    system2("git", args = c("log", "--name-status", "-1"), stdout = TRUE),
+    system2("git", args = c("remote", "-v"), stdout = TRUE)
+  )
+}
+
+## session info
+sessionInfo()
+```
+
+</details>
