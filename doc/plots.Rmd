@@ -12,7 +12,12 @@ source("../packages.R")
 ```
 
 ```{r load-targets}
-tar_load(model_draws)
+tar_load(alpha)
+tar_load(beta)
+tar_load(sigma)
+tar_load(y)
+tar_load(mu)
+tar_load(y)
 tar_load(m)
 ```
 
