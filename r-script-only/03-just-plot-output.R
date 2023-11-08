@@ -1,7 +1,9 @@
 library(greta)
+library(readr)
+library(here)
 
-m <- readr::read_rds("r-script-only/m.rds")
-draws <- readr::read_rds("r-script-only/draws.rds")
+m <- read_rds(here("r-script-only/m.rds"))
+draws <- read_rds(here("r-script-only/draws.rds"))
 
 petal_length_plot <- seq(min(iris$Petal.Length),
                          max(iris$Petal.Length),

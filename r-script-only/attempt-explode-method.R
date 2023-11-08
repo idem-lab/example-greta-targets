@@ -4,7 +4,7 @@ library(readr)
 
 source(here("r-script-only/01-just-define-model.R"))
 
-m <- read_rds("r-script-only/m.rds")
+m <- read_rds(here("r-script-only/m.rds"))
 
 # now if we try and do MCMC on the model object it doesn't work
 draws <- mcmc(m, n_samples = 10, chains = 1)
@@ -85,7 +85,10 @@ put_greta_arrays_into_env <- function(m){
 rstudioapi::restartSession()
 
 library(greta)
-m <- readr::read_rds("r-script-only/m.rds")
+library(readr)
+library(here)
+
+m <- read_rds(here("r-script-only/m.rds"))
 put_greta_arrays_into_env(m)
 alpha
 

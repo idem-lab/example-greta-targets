@@ -10,4 +10,4 @@ m <- model(alpha, beta, sigma)
 
 m
 
-readr::write_rds(x = m, file = "r-script-only/m.rds")
+readr::write_rds(x = m, file = here::here("r-script-only/m.rds"))

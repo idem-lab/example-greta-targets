@@ -1,7 +1,9 @@
 library(greta)
+library(readr)
+library(here)
 
-m <- readr::read_rds("r-script-only/m.rds")
+m <- read_rds(here("r-script-only/m.rds"))
 
 draws <- mcmc(m, n_samples = 10, chains = 1)
 
-readr::write_rds(draws, "r-script-only/draws.rds")
+write_rds(draws, here("r-script-only/draws.rds"))
