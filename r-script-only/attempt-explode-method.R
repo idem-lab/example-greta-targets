@@ -4,6 +4,25 @@ source("r-script-only/01-just-define-model.R")
 
 m <- readr::read_rds("r-script-only/m.rds")
 
+# now if we try and do MCMC on the model object it doesn't work
+draws <- mcmc(m, n_samples = 10, chains = 1)
+
+# this is because reticulate python objects don't persist across sessions
+# see: https://rstudio.github.io/reticulate/articles/package.html#implementing-s3-methods
+# and
+# https://cran.r-project.org/web/packages/future/vignettes/future-4-non-exportable-objects.html
+
+# so one option is to try and "awaken" the objects again
+# one approach is to put the arrays into the environment so they are visible
+# currently they don't exist
+alpha
+beta
+sigma
+
+# however there's probably some special sauce that needs to be done to correctly
+# initialise the tensorflow objects?
+# anyway, let's try this
+
 visible_arrays <- m$visible_greta_arrays
 visible_array_names <- names(visible_arrays)
 visible_array_names
@@ -72,3 +91,6 @@ draws <- mcmc(m, n_samples = 10, chains = 1)
 
 # still run into issues because the tensorflow object doesn't persist across
 # sessions
+
+# I'm a bit confused because Future can work with greta for MCMC so there
+# must be some tricks here we can use...
