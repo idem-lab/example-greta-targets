@@ -1,8 +1,10 @@
 library(greta)
+library(here)
+library(readr)
 
-source("r-script-only/01-just-define-model.R")
+source(here("r-script-only/01-just-define-model.R"))
 
-m <- readr::read_rds("r-script-only/m.rds")
+m <- read_rds("r-script-only/m.rds")
 
 # now if we try and do MCMC on the model object it doesn't work
 draws <- mcmc(m, n_samples = 10, chains = 1)
