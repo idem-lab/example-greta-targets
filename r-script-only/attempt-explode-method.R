@@ -1,11 +1,17 @@
+rstudioapi::restartSession()
+
 library(greta)
 library(here)
 library(readr)
 
 source(here("r-script-only/01-just-define-model.R"))
 
+rstudioapi::restartSession()
 m <- read_rds(here("r-script-only/m.rds"))
 
+m
+
+plot(m)
 # now if we try and do MCMC on the model object it doesn't work
 draws <- mcmc(m, n_samples = 10, chains = 1)
 
@@ -14,12 +20,29 @@ draws <- mcmc(m, n_samples = 10, chains = 1)
 # and
 # https://cran.r-project.org/web/packages/future/vignettes/future-4-non-exportable-objects.html
 
-# so one option is to try and "awaken" the objects again
 # one approach is to put the arrays into the environment so they are visible
 # currently they don't exist
 alpha
 beta
 sigma
+
+# so one option is to try and "awaken" the objects again
+# We can do this by running this code to 
+
+my_class <- class(m$dag$tf_log_prob_function)
+my_unclass <- unclass(m$dag$tf_log_prob_function)
+
+# force rebuild these things, like we do for parallel things
+dag <- m$dag
+dag$define_tf_trace_values_batch()
+dag$define_tf_log_prob_function()
+
+m$dag$tf_log_prob_function
+
+identical(my_class,class(m$dag$tf_log_prob_function))
+identical(my_unclass, unclass(m$dag$tf_log_prob_function))
+
+mcmc(m, n_samples = 10)
 
 # however there's probably some special sauce that needs to be done to correctly
 # initialise the tensorflow objects?

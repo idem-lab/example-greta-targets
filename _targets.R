@@ -12,4 +12,9 @@ tar_plan(
   tar_target(draws, mcmc(m, n_samples = 50)),
   tar_render(plots, "doc/plots.Rmd")
 
-  ) 
+  ) %>% 
+  tar_hook_before(
+    hook = greta_awaken_model(m),
+    # list the targets that use a greta model object
+    names = c(draws, plots)
+  )

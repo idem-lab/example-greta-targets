@@ -18,30 +18,35 @@ Error in eval(ei, envir) :
 Called from: py_call_impl(callable, call_args$unnamed, call_args$named)
 ```
 
+This is due to a detail in how greta works under the hood with python.
 
+It happens if you create a model in one R session and then try and use it in 
+another R session.
 
 # What you need to add to make greta work with targets
 
+To help fix this, you need to run some special code that essentially wakes up
+the sleeping python objects that greta created in the previous session.
 
+We call this `greta_awaken_model`, and it looks like this:
 
-# Getting started using tflow.
-
-```
-> library(tflow)
-> use_tflow()
-✓ Setting active project to '/Users/njtierney/github/njtierney/greta-dev/greta-target-example'
-✓ Creating 'R/'
-✓ Writing 'packages.R'
-✓ Writing '_targets.R'
-✓ Writing '.env'
-```
-
-Then create an Rmarkdown document that has some nice plots in it as well
-
-```
-> use_rmd("plots")
-✓ Creating 'doc/'
-✓ Writing 'doc/plots.Rmd'
+```r
+greta_awaken_model <- function(model){
+  dag <- model$dag
+  dag$define_tf_trace_values_batch()
+  dag$define_tf_log_prob_function()
+}
 ```
 
-See [tflow](https://github.com/milesmcbain/tflow) for more details.
+An example usage of this would be as follows:
+
+```r
+# read in a greta model from another R session
+m <- readr::read_rds("outputs/m.rds")
+greta_awaken_model(m)
+draws <- mcmc(m, )
+```
+
+An example pipeline with targets and greta can be seen in the `_targets.R` file
+of this repo, as well as [here](https://github.com/idem-lab/targets-pkg-greta/blob/main/_targets.R).
+

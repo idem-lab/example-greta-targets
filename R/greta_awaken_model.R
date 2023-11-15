@@ -13,3 +13,8 @@ greta_awaken_model <- function(model){
   dag$define_tf_log_prob_function()
 }
 
+read_greta <- function(path){
+  greta_model <- readr::read_rds(path)
+  greta_awaken_model(greta_model)
+  greta_model
+}
