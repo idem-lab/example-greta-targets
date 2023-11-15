@@ -79,7 +79,7 @@ run `greta_awaken_model(m)` at specified targets. In this case, `draws`, and
 `plots`.
 
 You can see the full pipeline in this repo here, starting at the 
-[`_targets.R`](_targets.R) file, as well as [here](https://github.com/idem-lab/targets-pkg-greta/blob/main/_targets.R).
+[`_targets.R`](_targets.R) file, and also at this repository [here](https://github.com/idem-lab/targets-pkg-greta/blob/main/_targets.R).
 
 # Thanks
 
