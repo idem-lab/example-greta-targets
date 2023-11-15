@@ -42,7 +42,7 @@ An example usage of this would be as follows:
 # read in a greta model from another R session
 m <- readr::read_rds("outputs/m.rds")
 greta_awaken_model(m)
-draws <- mcmc(m, )
+draws <- mcmc(m, n_samples = 100)
 ```
 
 An example pipeline with targets and greta can be seen in the `_targets.R` file
