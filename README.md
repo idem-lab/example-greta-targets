@@ -6,8 +6,6 @@
 
 The goal of greta-target-example is to demonstrate how to use targets with greta.
 
-This is a proof of concept and testing ground.
-
 # How greta fails with targets
 
 You might have seen this error before in targets:
@@ -50,3 +48,6 @@ draws <- mcmc(m, )
 An example pipeline with targets and greta can be seen in the `_targets.R` file
 of this repo, as well as [here](https://github.com/idem-lab/targets-pkg-greta/blob/main/_targets.R).
 
+# Thanks
+
+Thanks to Nick Golding for coming up with the code solution, and Saras Windecker for working out the practical solution for getting this to work with targets.
